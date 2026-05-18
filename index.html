@@ -1,0 +1,105 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>근무시간 자동계산 대시보드</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard">
+        <header class="header">
+            <h1>⏰ 근무시간 자동계산 대시보드</h1>
+            <div class="header-info">
+                <span class="date" id="currentDate"></span>
+            </div>
+        </header>
+
+        <section class="info-section">
+            <div class="info-card">
+                <h3>📋 휴게시간 자동 적용 기준</h3>
+                <ul>
+                    <li><strong>4시간 미만:</strong> 휴게시간 0분</li>
+                    <li><strong>4시간 이상:</strong> 휴게시간 30분</li>
+                    <li><strong>8시간 이상:</strong> 휴게시간 1시간</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="input-section">
+            <h2>📝 근무시간 입력</h2>
+            <div class="input-grid">
+                <div class="input-group">
+                    <label for="startTime">출근시간</label>
+                    <input type="text" id="startTime" placeholder="예: 09:00" onchange="calculateWorkTime()" oninput="formatTime(this)">
+                </div>
+                <div class="input-group">
+                    <label for="endTime">퇴근 예정 시간</label>
+                    <input type="text" id="endTime" placeholder="예: 18:00" onchange="calculateWorkTime()" oninput="formatTime(this)">
+                </div>
+                <div class="input-group">
+                    <label for="breakTime">제외시간 (휴게시간)</label>
+                    <input type="text" id="breakTime" placeholder="예: 01:00 (자동 계산됨)" onchange="onBreakTimeChange()" oninput="formatTime(this)">
+                    <small class="input-hint">자동 계산되며, 직접 수정도 가능합니다</small>
+                </div>
+                <div class="input-group result">
+                    <label for="workTime">1일 근무시간</label>
+                    <input type="text" id="workTime" readonly placeholder="자동 계산됩니다">
+                </div>
+            </div>
+        </section>
+
+        <section class="summary-section">
+            <h2>📊 근무시간 요약</h2>
+            <div class="summary-grid">
+                <div class="summary-card">
+                    <div class="summary-label">총 근무시간</div>
+                    <div class="summary-value" id="totalWorkTime">0시간 0분</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">총 휴게시간</div>
+                    <div class="summary-value" id="totalBreakTime">0시간 0분</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">실제 근무시간</div>
+                    <div class="summary-value" id="actualWorkTime">0시간 0분</div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-label">초과 근무시간</div>
+                    <div class="summary-value" id="overtime">0분</div>
+                    <small class="input-hint">1일 근무시간 기준</small>
+                </div>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <h2>📅 근무 기록</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>출근시간</th>
+                            <th>퇴근 예정 시간</th>
+                            <th>제외시간</th>
+                            <th>1일 근무시간</th>
+                            <th>관리</th>
+                        </tr>
+                    </thead>
+                    <tbody id="workHistory">
+                        <tr class="empty-row">
+                            <td colspan="6">근무 기록이 없습니다. 위에서 시간을 입력하고 저장해주세요.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="saveRecord()">💾 기록 저장</button>
+                <button class="btn btn-secondary" onclick="clearInputs()">🗑️ 입력 초기화</button>
+            </div>
+        </section>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
